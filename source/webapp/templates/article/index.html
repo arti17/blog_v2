@@ -18,7 +18,7 @@
         </p>
         <p>Tags:
             {% for tag in article.tags.all %}
-                <small>{{ tag }},</small>
+                <small><a href="?tag={{ tag.pk }}">{{ tag }}</a></small>
             {% endfor %}
 
         </p>

@@ -5,7 +5,7 @@ from django.views.generic import ListView, DetailView, CreateView, \
     UpdateView, DeleteView
 
 from webapp.forms import ArticleForm, ArticleCommentForm, SimpleSearchForm
-from webapp.models import Article
+from webapp.models import Article, Tag
 from django.core.paginator import Paginator
 
 
@@ -20,6 +20,8 @@ class IndexView(ListView):
     def get(self, request, *args, **kwargs):
         self.form = self.get_search_form()
         self.search_query = self.get_search_query()
+        self.tag_query = self.get_tag_query()
+        print(self.tag_query)
         return super().get(request, *args, **kwargs)
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -37,6 +39,10 @@ class IndexView(ListView):
                 | Q(author__icontains=self.search_query)
                 | Q(tags__name__iexact=self.search_query)
             )
+        if self.tag_query:
+            queryset = queryset.filter(
+                Q(tags__name__iexact=Tag.objects.get(pk=self.tag_query))
+            )
         return queryset
 
     def get_search_form(self):
@@ -45,6 +51,11 @@ class IndexView(ListView):
     def get_search_query(self):
         if self.form.is_valid():
             return self.form.cleaned_data['search']
+        return None
+
+    def get_tag_query(self):
+        if self.form.is_valid():
+            return self.request.GET.get('tag')
         return None
 
 
