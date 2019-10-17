@@ -1,0 +1,31 @@
+<div class="pagination">
+    <form action="" method="GET">
+        <a href="?{% if query %}{{ query }}&{% endif %}page=1">&laquo; В начало</a>
+        {% if page_obj.has_previous %}
+            <a href="?{% if query %}{{ query }}&{% endif %}page={{ page_obj.previous_page_number }}">Назад</a>
+        {% else %}
+            <span class="page-disabled">Назад</span>
+        {% endif %}
+
+        <span>
+            Страница <input class="page-input" type="text" name="page" value="{{ page_obj.number }}" maxlength="5"> из {{ paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?{% if query %}{{ query }}&{% endif %}page={{ page_obj.next_page_number }}">Далее</a>
+        {% else %}
+            <span class="page-disabled">Далее</span>
+        {% endif %}
+
+        <a href="?{% if query %}{{ query }}&{% endif %}page={{ paginator.num_pages }}">В конец &raquo;</a>
+    </form>
+    <div>
+        {% for page in paginator.page_range %}
+            {% if page_obj.number == page %}
+                <span class="page-active">{{ page }}</span>
+            {% else %}
+                <a href="?{% if query %}{{ query }}&{% endif %}page={{ page }}">{{ page }}</a>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block menu %}
+    <li><a href="{% url 'comment_add' %}">Add Comment</a></li>
+{% endblock %}
+
+{% block content %}
+    <h1>Comments:</h1>
+    {% if is_paginated %}
+        {% include 'partial/pagination.html' %}
+    {% endif %}
+    {% for comment in comments %}
+        <div class="comment">
+            <p>To article: <a href="{% url 'article_view' comment.article.pk %}">{{ comment.article }}</a></p>
+            <p>{{ comment.author }} commented at {{ comment.created_at|date:'d.m.Y H:i:s' }}</p>
+            <div class="pre">{{ comment.text }}</div>
+            <p class="comment-links">
+                <a href="{% url 'comment_update' comment.pk %}">Edit</a>
+                <a href="{% url 'comment_delete' comment.pk %}">Delete</a>
+            </p>
+        </div>
+    {% empty %}
+        <p>No comments yet.</p>
+    {% endfor %}
+    {% if is_paginated %}
+        {% include 'partial/pagination.html' %}
+    {% endif %}
+{% endblock %}

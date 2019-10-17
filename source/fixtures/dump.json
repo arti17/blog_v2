@@ -1,0 +1,108 @@
+[
+{
+  "model": "webapp.article",
+  "pk": 1,
+  "fields": {
+    "title": "Article",
+    "text": "Article 1",
+    "author": "Me",
+    "created_at": "2019-09-03T14:17:12.139Z",
+    "updated_at": "2019-09-03T14:22:09.383Z"
+  }
+},
+{
+  "model": "webapp.article",
+  "pk": 2,
+  "fields": {
+    "title": "Another One",
+    "text": "Another Article",
+    "author": "Me",
+    "created_at": "2019-09-03T14:06:09.002Z",
+    "updated_at": "2019-09-03T14:06:09.002Z"
+  }
+},
+{
+  "model": "webapp.article",
+  "pk": 3,
+  "fields": {
+    "title": "Article 3",
+    "text": "Article 3",
+    "author": "He",
+    "created_at": "2019-09-03T14:09:48.915Z",
+    "updated_at": "2019-09-03T14:09:48.915Z"
+  }
+},
+{
+  "model": "webapp.article",
+  "pk": 4,
+  "fields": {
+    "title": "Title",
+    "text": "Text",
+    "author": "Author",
+    "created_at": "2019-09-03T14:44:14.453Z",
+    "updated_at": "2019-09-03T14:44:14.453Z"
+  }
+},
+{
+  "model": "webapp.comment",
+  "pk": 1,
+  "fields": {
+    "article": 1,
+    "text": "Comment 1",
+    "author": "\u0410\u043d\u043e\u043d\u0438\u043c",
+    "created_at": "2019-09-23T14:15:58.410Z",
+    "updated_at": "2019-09-23T14:15:58.410Z"
+  }
+},
+{
+  "model": "webapp.comment",
+  "pk": 2,
+  "fields": {
+    "article": 1,
+    "text": "Comment 2",
+    "author": "\u0410\u043d\u043e\u043d\u0438\u043c",
+    "created_at": "2019-09-23T14:17:53.017Z",
+    "updated_at": "2019-09-23T14:17:53.017Z"
+  }
+},
+{
+  "model": "webapp.comment",
+  "pk": 3,
+  "fields": {
+    "article": 1,
+    "text": "Comment 3",
+    "author": "\u0410\u043d\u043e\u043d\u0438\u043c",
+    "created_at": "2019-09-23T14:24:40.198Z",
+    "updated_at": "2019-09-23T14:24:40.199Z"
+  }
+},
+{
+  "model": "webapp.comment",
+  "pk": 4,
+  "fields": {
+    "article": 2,
+    "text": "Comment 4",
+    "author": "\u0410\u043d\u043e\u043d\u0438\u043c",
+    "created_at": "2019-09-23T14:27:43.904Z",
+    "updated_at": "2019-09-23T14:27:43.905Z"
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$150000$rETxGUggP9m6$1+XpTSlJd0TUOGy4a5vygINOKbNt4VBXluA1qSdpgYY=",
+    "last_login": "2019-09-23T14:35:51.420Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2019-09-03T14:37:10.646Z",
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]

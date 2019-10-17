@@ -1,0 +1,9 @@
+.idea
+*.sqlite3
+__pycache__
+venv
+uploads
+.DS_Store
+*.pyc
+*.log
+virtualenv
