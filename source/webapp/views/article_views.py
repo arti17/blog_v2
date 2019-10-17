@@ -35,6 +35,7 @@ class IndexView(ListView):
             queryset = queryset.filter(
                 Q(title__icontains=self.search_query)
                 | Q(author__icontains=self.search_query)
+                | Q(tags__name__iexact=self.search_query)
             )
         return queryset
 
