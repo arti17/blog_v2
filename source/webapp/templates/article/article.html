@@ -13,6 +13,11 @@
     <p>Created by {{ article.author }} ({{ article.category|default_if_none:'Без категории' }})
         at {{ article.created_at|date:'d.m.Y H:i:s' }}</p>
     <div class="pre">{{ article.text }}</div>
+    <br>
+    Tags:
+    {%for tag in article.tags.all %}
+        <small> {{ tag }},</small>
+    {% endfor %}
     <hr/>
     <h3>Comments:</h3>
     {% if is_paginated %}

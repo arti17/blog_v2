@@ -1,4 +1,5 @@
 from django.db.models import Q
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse, reverse_lazy
 from django.utils.http import urlencode
 from django.views.generic import ListView, DetailView, CreateView, \
@@ -21,7 +22,6 @@ class IndexView(ListView):
         self.form = self.get_search_form()
         self.search_query = self.get_search_query()
         self.tag_query = self.get_tag_query()
-        print(self.tag_query)
         return super().get(request, *args, **kwargs)
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -86,6 +86,15 @@ class ArticleCreateView(CreateView):
     template_name = 'article/create.html'
     form_class = ArticleForm
 
+    def form_valid(self, form):
+        self.object = form.save()
+        tags = self.request.POST.get('tags')
+        tags = tags.split(',')
+        for tag in tags:
+            tag, _ = Tag.objects.get_or_create(name=tag.strip())
+            self.object.tags.add(tag)
+        return redirect(self.get_success_url())
+
     def get_success_url(self):
         return reverse('article_view', kwargs={'pk': self.object.pk})
 
@@ -93,8 +102,29 @@ class ArticleCreateView(CreateView):
 class ArticleUpdateView(UpdateView):
     model = Article
     template_name = 'article/update.html'
-    context_object_name = 'article'
     form_class = ArticleForm
+    context_object_name = 'article'
+
+    def get(self, request, *args, **kwargs):
+        article = get_object_or_404(Article, pk=self.kwargs['pk'])
+        form = self.form_class(instance=article)
+        tags = article.tags.all().values('name')
+        str_tag = ''
+        for tag in tags:
+            str_tag += tag['name'] + ', '
+        form.fields['tags'].initial = str_tag.strip(', ')
+        return render(request, self.template_name, context={'form': form, 'article': article})
+
+    def form_valid(self, form):
+        article = get_object_or_404(Article, pk=self.kwargs['pk'])
+        article.tags.clear()
+        self.object = form.save()
+        tags = self.request.POST.get('tags')
+        tags = tags.split(',')
+        for tag in tags:
+            tag, _ = Tag.objects.get_or_create(name=tag.strip())
+            self.object.tags.add(tag)
+        return redirect(self.get_success_url())
 
     def get_success_url(self):
         return reverse('article_view', kwargs={'pk': self.object.pk})
