@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+    <form action="{% url "article_search" %}" method="post">
+        {% csrf_token %}
+
+        {% for error in form.non_field_errors %}
+            <p class="form-error">{{ error }}</p>
+        {% endfor %}
+
+        {% for field in form %}
+            <p><label for="{{ field.id_for_label }}">{{ field.label }}</label>: {{ field }}</p>
+            {% for error in field.errors %}
+                <p class="form-error">{{ error }}</p>
+            {% endfor %}
+            <p></p>
+        {% endfor %}
+
+        <p><input type="submit" value="Search"></p>
+    </form>
+
+    <h1>Results</h1>
+    {% include 'partial/article_list.html' %}
+{% endblock %}

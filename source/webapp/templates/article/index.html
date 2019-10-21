@@ -11,24 +11,25 @@
         {% include 'partial/pagination.html' %}
     {% endif %}
     <hr/>
-    {% for article in articles %}
-        <h2>{{ article.title }}</h2>
-        <p>Created by {{ article.author }} ({{ article.category|default_if_none:'Без категории' }})
-            at {{ article.created_at|date:'d.m.Y H:i:s' }}
-        </p>
-        <p>Tags:
-            {% for tag in article.tags.all %}
-                <small><a href="?tag={{ tag.pk }}">{{ tag }}</a></small>
-            {% endfor %}
-
-        </p>
-        <p>
-            <a href="{% url 'article_view' article.pk %}">More...</a>
-            <a href="{% url 'article_update' article.pk %}">Edit</a>
-            <a href="{% url "article_delete" article.pk %}">Delete</a>
-        </p>
-        <hr/>
-    {% endfor %}
+{#    {% for article in articles %}#}
+{#        <h2>{{ article.title }}</h2>#}
+{#        <p>Created by {{ article.author }} ({{ article.category|default_if_none:'Без категории' }})#}
+{#            at {{ article.created_at|date:'d.m.Y H:i:s' }}#}
+{#        </p>#}
+{#        <p>Tags:#}
+{#            {% for tag in article.tags.all %}#}
+{#                <small><a href="?tag={{ tag.pk }}">{{ tag }}</a></small>#}
+{#            {% endfor %}#}
+{##}
+{#        </p>#}
+{#        <p>#}
+{#            <a href="{% url 'article_view' article.pk %}">More...</a>#}
+{#            <a href="{% url 'article_update' article.pk %}">Edit</a>#}
+{#            <a href="{% url "article_delete" article.pk %}">Delete</a>#}
+{#        </p>#}
+{#        <hr/>#}
+{#    {% endfor %}#}
+    {% include 'partial/article_list.html' %}
     {% if is_paginated %}
         {% include 'partial/pagination.html' %}
     {% endif %}

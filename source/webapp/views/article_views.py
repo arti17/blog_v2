@@ -3,9 +3,8 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse, reverse_lazy
 from django.utils.http import urlencode
 from django.views.generic import ListView, DetailView, CreateView, \
-    UpdateView, DeleteView
-
-from webapp.forms import ArticleForm, ArticleCommentForm, SimpleSearchForm
+    UpdateView, DeleteView, FormView
+from webapp.forms import ArticleForm, ArticleCommentForm, SimpleSearchForm, FullSearchForm
 from webapp.models import Article, Tag
 from django.core.paginator import Paginator
 
@@ -135,3 +134,47 @@ class ArticleDeleteView(DeleteView):
     template_name = 'article/delete.html'
     context_object_name = 'article'
     success_url = reverse_lazy('index')
+
+
+class ArticleSearchView(FormView):
+    template_name = 'article/search.html'
+    form_class = FullSearchForm
+
+    def form_valid(self, form):
+        text = form.cleaned_data.get('text')
+        author = form.cleaned_data.get('author')
+        query = Q()
+        if text:
+            query = query & self.get_text_query(form, text)
+        if author:
+            query = query & self.get_author_query(form, author)
+        articles = Article.objects.filter(query).distinct()
+        context = self.get_context_data()
+        context['articles'] = articles
+        return self.render_to_response(context)
+
+    def get_text_query(self, form, text):
+        query = Q()
+        in_title = form.cleaned_data.get('in_title')
+        if in_title:
+            query = query | Q(title__icontains=text)
+        in_text = form.cleaned_data.get('in_text')
+        if in_text:
+            query = query | Q(text__icontains=text)
+        in_tags = form.cleaned_data.get('in_tags')
+        if in_tags:
+            query = query | Q(tags__name__iexact=text)
+        in_comment_text = form.cleaned_data.get('in_comment_text')
+        if in_comment_text:
+            query = query | Q(comments__text__icontains=text)
+        return query
+
+    def get_author_query(self, form, author_name):
+        query = Q()
+        article_author = form.cleaned_data['article_author']
+        if article_author:
+            query = query | Q(author__iexact=author_name)
+        article_comment_author = form.cleaned_data['comment_author']
+        if article_comment_author:
+            query = query | Q(comments__author__iexact=author_name)
+        return query
